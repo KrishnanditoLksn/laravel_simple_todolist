@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use App\Models\User;
 use http\Env\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class TodoController extends Controller
@@ -21,13 +23,16 @@ class TodoController extends Controller
         return view('todo', ['title' => 'Welcome'])->with('todos', $todo);
     }
 
-    public function store(\Illuminate\Http\Request $request): \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|RedirectResponse|\Illuminate\Routing\Redirector
+    public function store(\Illuminate\Http\Request $request): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
+        $user = Auth::id();
         $data = $request->all();
         $todo = new Todo;
         $todo->todo_name = $data['name'];
+        $todo->user()->associate($user);
         $todo->save();
         return redirect('/');
+//        $request->dd();
     }
 
     public function update($id): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
@@ -44,5 +49,4 @@ class TodoController extends Controller
         $todo->delete();
         return redirect('/');
     }
-
 }
