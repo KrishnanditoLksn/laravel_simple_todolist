@@ -13,9 +13,9 @@ return new class extends Migration {
         Schema::create('todo', function (Blueprint $table) {
             $table->id()->primary();
             $table->string('todo_name');
-            $table->bigInteger('todo_user_id')->unsigned()->default(0);
+            $table->bigInteger('todo_user_id')->unsigned();
             $table->string('todo_status')->default('selesai')->nullable(false);
-//            $table->foreign('todo_user_id')->references('id')->on('users');
+            $table->foreign('todo_user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
