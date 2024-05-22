@@ -18,9 +18,13 @@ class TodoController extends Controller
 
     public function index(): View
     {
-        //fetch all data
-        $todo = Todo::all();
-        return view('todo', ['title' => 'Welcome'])->with('todos', $todo);
+        // Fetch the authenticated user
+        $user = Auth::user();
+
+        // Fetch todos that belong to the authenticated user
+        $todos = Todo::where('todo_user_id', $user->id)->get();
+
+        return view('todo', ['title' => 'Welcome'])->with('todos', $todos);
     }
 
     public function store(\Illuminate\Http\Request $request): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
