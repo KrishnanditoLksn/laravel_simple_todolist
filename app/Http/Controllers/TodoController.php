@@ -23,7 +23,6 @@ class TodoController extends Controller
 
         // Fetch todos that belong to the authenticated user
         $todos = Todo::where('todo_user_id', $user->id)->get();
-
         return view('todo', ['title' => 'Welcome'])->with('todos', $todos);
     }
 
@@ -35,7 +34,7 @@ class TodoController extends Controller
         $todo->todo_name = $data['name'];
         $todo->user()->associate($user);
         $todo->save();
-        return redirect('/');
+        return redirect('/todos');
 //        $request->dd();
     }
 
@@ -44,13 +43,13 @@ class TodoController extends Controller
         $todo = Todo::find($id);
         $todo->todo_status = 'Belum Selesai';
         $todo->save();
-        return redirect('/');
+        return redirect('/todos');
     }
 
     public function delete($id): \Illuminate\Contracts\Foundation\Application|RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\Foundation\Application
     {
         $todo = Todo::find($id);
         $todo->delete();
-        return redirect('/');
+        return redirect('/todos');
     }
 }
